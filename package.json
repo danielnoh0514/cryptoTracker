@@ -62,5 +62,5 @@
     "@types/styled-components": "^5.1.26",
     "react-helmet": "^6.1.0"
   },
-  "homepage": "https://daniel0514.github.io/cryptoTracker"
+  "homepage": "https://daniel0514.github.io/cryptoTracker/"
 }
