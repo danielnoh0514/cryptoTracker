@@ -168,6 +168,7 @@ function Coin() {
       refetchInterval: 5000,
     }
   );
+  console.log(tickersData?.quotes.USD.price);
 
   const loading = infoLoading || tickersLoading;
   return (
