@@ -101,7 +101,7 @@ const Header = styled.header`
 const Overview = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.3);
   padding: 10px 20px;
   border-radius: 10px;
 `;
@@ -130,7 +130,7 @@ const Details = styled.div`
 const Detail = styled.span<{ isActive: boolean }>`
   text-align: center;
   padding: 13px 0px;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.3);
   border-radius: 10px;
   a {
     display: block;
@@ -168,7 +168,6 @@ function Coin() {
       refetchInterval: 5000,
     }
   );
-  console.log(tickersData?.quotes.USD.price);
 
   const loading = infoLoading || tickersLoading;
   return (

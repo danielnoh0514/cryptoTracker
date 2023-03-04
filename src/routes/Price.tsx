@@ -6,6 +6,7 @@ import { useRecoilValue } from "recoil";
 import { isDarkAtom } from "./atoms";
 import { type } from "os";
 import styled from "styled-components";
+import { useState } from "react";
 
 interface ChartProps {
   coinId: string;
@@ -20,6 +21,10 @@ interface IData {
   close: number;
   volume: string;
   market_cap: number;
+}
+
+interface IError {
+  error: string;
 }
 
 const Minji = styled.div`
@@ -37,24 +42,45 @@ const MinjiItem = styled.span`
   font-weight: 800;
 `;
 
-function Chart({ coinId }: ChartProps) {
-  const isDark = useRecoilValue(isDarkAtom);
+const Span = styled.span`
+  display: block;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 800;
+`;
 
+function Price({ coinId }: ChartProps) {
+  const [info, setInfo] = useState(false);
   const { isLoading, data } = useQuery<IData[]>(["priceChart", coinId], () =>
     fetchCoinChart(coinId)
   );
-  const startPrice = data?.slice(0, 1).map((p) => p.open);
-  const endPrice = data?.slice(0, 1).map((p) => p.open - p.close);
-  const result = endPrice
-    ?.reduce((total, currentValue) => (total = currentValue), 0)
-    .toFixed(2);
+
+  const result = data ?? [];
+  let minji = null;
+  if (Array.isArray(data)) {
+    minji = result
+      .reduce((start, current) => {
+        return +start + +current.open - +current.close;
+      }, 0)
+      .toFixed(2);
+  }
 
   return (
-    <Minji>
-      <span>Today's Result</span>
-      <MinjiItem>${result}</MinjiItem>
-    </Minji>
+    <div>
+      {minji ? (
+        isLoading ? (
+          "Chart Loading..."
+        ) : (
+          <Minji>
+            <span>Last 2 Week's Result</span>
+            <MinjiItem>$ {minji}</MinjiItem>
+          </Minji>
+        )
+      ) : (
+        <Span>Data Not Found</Span>
+      )}
+    </div>
   );
 }
 
-export default Chart;
+export default Price;

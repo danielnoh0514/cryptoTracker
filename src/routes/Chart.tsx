@@ -5,6 +5,7 @@ import ApexChart from "react-apexcharts";
 import { useRecoilValue } from "recoil";
 import { isDarkAtom } from "./atoms";
 import { type } from "os";
+import styled from "styled-components";
 
 interface ChartProps {
   coinId: string;
@@ -21,132 +22,65 @@ interface IData {
   market_cap: number;
 }
 
-function Chart({ coinId }: ChartProps) {
-  const isDark = useRecoilValue(isDarkAtom);
+const Span = styled.span`
+  display: block;
+  text-align: center;
+  font-size: 20px;
+  font-weight: 800;
+`;
 
+function Chart({ coinId }: ChartProps) {
   const { isLoading, data } = useQuery<IData[]>(["priceChart", coinId], () =>
     fetchCoinChart(coinId)
   );
-  console.log(data);
+
+  const exceptData = data ?? [];
+  let chartData = null;
+  if (Array.isArray(data)) {
+    chartData = exceptData?.map((i) => {
+      return {
+        x: i.time_close,
+        y: [i.open, i.high, i.low, i.close],
+      };
+    });
+  }
+
   return (
     <div>
-      {isLoading ? (
-        "Loading..."
-      ) : (
+      {chartData ? (
         <ApexChart
           type="candlestick"
           series={[
             {
-              data: [
-                {
-                  x: data?.slice(0, 1).map((p) => p.time_close),
-                  y: [
-                    data?.slice(0, 1).map((p) => p.open),
-                    data?.slice(0, 1).map((p) => p.high),
-                    data?.slice(0, 1).map((p) => p.low),
-                    data?.slice(0, 1).map((p) => p.close),
-                  ],
-                },
-                {
-                  x: data?.slice(1, 2).map((p) => p.time_close),
-                  y: [
-                    data?.slice(1, 2).map((p) => p.open),
-                    data?.slice(1, 2).map((p) => p.high),
-                    data?.slice(1, 2).map((p) => p.low),
-                    data?.slice(1, 2).map((p) => p.close),
-                  ],
-                },
-                {
-                  x: data?.slice(2, 3).map((p) => p.time_close),
-                  y: [
-                    data?.slice(2, 3).map((p) => p.open),
-                    data?.slice(2, 3).map((p) => p.high),
-                    data?.slice(2, 3).map((p) => p.low),
-                    data?.slice(2, 3).map((p) => p.close),
-                  ],
-                },
-                {
-                  x: data?.slice(4, 5).map((p) => p.time_close),
-                  y: [
-                    data?.slice(4, 5).map((p) => p.open),
-                    data?.slice(4, 5).map((p) => p.high),
-                    data?.slice(4, 5).map((p) => p.low),
-                    data?.slice(4, 5).map((p) => p.close),
-                  ],
-                },
-                {
-                  x: data?.slice(5, 6).map((p) => p.time_close),
-                  y: [
-                    data?.slice(5, 6).map((p) => p.open),
-                    data?.slice(5, 6).map((p) => p.high),
-                    data?.slice(5, 6).map((p) => p.low),
-                    data?.slice(5, 6).map((p) => p.close),
-                  ],
-                },
-                {
-                  x: data?.slice(6, 7).map((p) => p.time_close),
-                  y: [
-                    data?.slice(6, 7).map((p) => p.open),
-                    data?.slice(6, 7).map((p) => p.high),
-                    data?.slice(6, 7).map((p) => p.low),
-                    data?.slice(6, 7).map((p) => p.close),
-                  ],
-                },
-                {
-                  x: data?.slice(7, 8).map((p) => p.time_close),
-                  y: [
-                    data?.slice(7, 8).map((p) => p.open),
-                    data?.slice(7, 8).map((p) => p.high),
-                    data?.slice(7, 8).map((p) => p.low),
-                    data?.slice(7, 8).map((p) => p.close),
-                  ],
-                },
-                {
-                  x: data?.slice(8, 9).map((p) => p.time_close),
-                  y: [
-                    data?.slice(8, 9).map((p) => p.open),
-                    data?.slice(8, 9).map((p) => p.high),
-                    data?.slice(8, 9).map((p) => p.low),
-                    data?.slice(8, 9).map((p) => p.close),
-                  ],
-                },
-                {
-                  x: data?.slice(9, 10).map((p) => p.time_close),
-                  y: [
-                    data?.slice(9, 10).map((p) => p.open),
-                    data?.slice(9, 10).map((p) => p.high),
-                    data?.slice(9, 10).map((p) => p.low),
-                    data?.slice(9, 10).map((p) => p.close),
-                  ],
-                },
-                {
-                  x: data?.slice(10, 11).map((p) => p.time_close),
-                  y: [
-                    data?.slice(10, 11).map((p) => p.open),
-                    data?.slice(10, 11).map((p) => p.high),
-                    data?.slice(10, 11).map((p) => p.low),
-                    data?.slice(10, 11).map((p) => p.close),
-                  ],
-                },
-                {
-                  x: data?.slice(11, 12).map((p) => p.time_close),
-                  y: [
-                    data?.slice(11, 12).map((p) => p.open),
-                    data?.slice(11, 12).map((p) => p.high),
-                    data?.slice(11, 12).map((p) => p.low),
-                    data?.slice(11, 12).map((p) => p.close),
-                  ],
-                },
-              ],
+              data: chartData,
             },
           ]}
           options={{
+            colors: ["white"],
+
             chart: { height: "350" },
             xaxis: {
               type: "datetime",
+              labels: {
+                style: {
+                  colors: "black",
+                },
+              },
+            },
+            yaxis: {
+              tooltip: {
+                enabled: true,
+              },
+              labels: {
+                style: {
+                  colors: "black",
+                },
+              },
             },
           }}
         />
+      ) : (
+        <Span>Data Not Found</Span>
       )}
     </div>
   );
