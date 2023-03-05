@@ -57,6 +57,7 @@ body {
   font-family: 'Open Sans', sans-serif;
   background-color: ${(props) => props.theme.bgColor};
   color: ${(props) => props.theme.textColor}
+  
 }
 
 a {
@@ -88,7 +89,7 @@ function App() {
       <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
         <GlobalStyle />
         <Router />
-        <ReactQueryDevtools initialIsOpen={true} />
+        <ReactQueryDevtools initialIsOpen={false} />
       </ThemeProvider>
     </>
   );

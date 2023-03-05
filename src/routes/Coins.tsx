@@ -4,8 +4,10 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
 import { Helmet } from "react-helmet";
-import { useSetRecoilState } from "recoil";
+import { RecoilState, useRecoilState, useSetRecoilState } from "recoil";
 import { isDarkAtom } from "./atoms";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 
 const Container = styled.div`
   padding: 0px 15px;
@@ -72,8 +74,21 @@ interface ICoin {
   type: string;
 }
 
+const Mode = styled.button`
+  padding: 5px;
+  border-radius: 10px;
+  background-color: transparent;
+  border: none;
+  font-size: 25px;
+
+  &:hover {
+    color: ${(props) => props.theme.accentColor};
+    transition: 0.3s color ease-in-out;
+  }
+`;
+
 function Coins() {
-  const setterFn = useSetRecoilState(isDarkAtom);
+  const [isDark, setterFn] = useRecoilState(isDarkAtom);
   const { isLoading, data } = useQuery<ICoin[]>(["allCoins"], fetchCoins);
 
   return (
@@ -83,7 +98,13 @@ function Coins() {
       </Helmet>
       <Header>
         <Title>Crypto Currency</Title>
-        <button onClick={() => setterFn((prev) => !prev)}>Mode</button>
+        <Mode onClick={() => setterFn((prev) => !prev)}>
+          {isDark ? (
+            <FontAwesomeIcon icon={faMoon} />
+          ) : (
+            <FontAwesomeIcon icon={faSun} />
+          )}
+        </Mode>
       </Header>
       {isLoading ? (
         <Loading>Loading...</Loading>
@@ -110,3 +131,6 @@ function Coins() {
   );
 }
 export default Coins;
+function useRecoil(isDarkAtom: RecoilState<boolean>): [any, any] {
+  throw new Error("Function not implemented.");
+}

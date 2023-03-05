@@ -101,7 +101,7 @@ const Header = styled.header`
 const Overview = styled.div`
   display: flex;
   justify-content: space-between;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: ${(props) => props.theme.accentColor};
   padding: 10px 20px;
   border-radius: 10px;
 `;
@@ -117,7 +117,11 @@ const OverviewItem = styled.div`
   }
 `;
 const Description = styled.p`
+  display: block;
+  padding: 15px;
+  border-radius: 10px;
   margin: 20px 0px;
+  background-color: ${(props) => props.theme.accentColor};
 `;
 
 const Details = styled.div`
@@ -130,26 +134,21 @@ const Details = styled.div`
 const Detail = styled.span<{ isActive: boolean }>`
   text-align: center;
   padding: 13px 0px;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: ${(props) => props.theme.accentColor};
   border-radius: 10px;
   a {
     display: block;
   }
 
-  color: ${(props) =>
-    props.isActive ? props.theme.accentColor : props.theme.textColor};
+  color: ${(props) => (props.isActive ? "#ff7675" : props.theme.textColor)};
 `;
 
 const Home = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-  width: 50px;
-  height: 50px;
-  padding: 10px;
+  margin-top: 40px;
   color: ${(props) => props.theme.accentColor};
-  border-radius: 50px;
+  a {
+    font-size: 20px;
+  }
 `;
 
 function Coin() {
@@ -178,7 +177,7 @@ function Coin() {
         </title>
       </Helmet>
       <Home>
-        <Link to={`/`}>Home</Link>
+        <Link to={`/`}>Home&rarr;</Link>
       </Home>
       <Header>
         <Title>

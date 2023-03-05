@@ -60,7 +60,7 @@ function Price({ coinId }: ChartProps) {
   if (Array.isArray(data)) {
     minji = result
       .reduce((start, current) => {
-        return +start + +current.open - +current.close;
+        return +start + (+current.open - +current.close);
       }, 0)
       .toFixed(2);
   }
@@ -72,8 +72,8 @@ function Price({ coinId }: ChartProps) {
           "Chart Loading..."
         ) : (
           <Minji>
-            <span>Last 2 Week's Result</span>
-            <MinjiItem>$ {minji}</MinjiItem>
+            <span>Result of Last 21 Days</span>
+            <MinjiItem>$ {+minji > 0 ? "+" + minji : minji}</MinjiItem>
           </Minji>
         )
       ) : (
