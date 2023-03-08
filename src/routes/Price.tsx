@@ -72,7 +72,7 @@ function Price({ coinId }: ChartProps) {
           "Chart Loading..."
         ) : (
           <Minji>
-            <span>Result of Last 21 Days</span>
+            <span>Current Value</span>
             <MinjiItem>$ {+minji > 0 ? "+" + minji : minji}</MinjiItem>
           </Minji>
         )
