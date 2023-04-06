@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { fetchCoins } from "../api";
 import { Helmet } from "react-helmet";
-import { RecoilState, useRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { isDarkAtom } from "./atoms";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
@@ -119,7 +118,7 @@ function Coins() {
                 }}
               >
                 <Img
-                  src={`https://coinicons-api.vercel.app/api/icon/${coin.symbol.toLowerCase()}`}
+                  src={`https://assets.coincap.io/assets/icons/${coin.symbol.toLowerCase()}@2x.png`}
                 />
                 {coin.name} &rarr;{" "}
               </Link>
@@ -131,6 +130,3 @@ function Coins() {
   );
 }
 export default Coins;
-function useRecoil(isDarkAtom: RecoilState<boolean>): [any, any] {
-  throw new Error("Function not implemented.");
-}

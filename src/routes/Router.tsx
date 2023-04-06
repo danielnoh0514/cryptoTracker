@@ -1,4 +1,4 @@
-import { BrowserRouter, Switch, Route, HashRouter } from "react-router-dom";
+import { Switch, Route, HashRouter } from "react-router-dom";
 import Coin from "./Coin";
 import Coins from "./Coins";
 

@@ -1,10 +1,6 @@
 import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
 import { fetchCoinChart } from "../api";
 import ApexChart from "react-apexcharts";
-import { useRecoilValue } from "recoil";
-import { isDarkAtom } from "./atoms";
-import { type } from "os";
 import styled from "styled-components";
 
 interface ChartProps {
@@ -30,7 +26,7 @@ const Span = styled.span`
 `;
 
 function Chart({ coinId }: ChartProps) {
-  const { isLoading, data } = useQuery<IData[]>(["priceChart", coinId], () =>
+  const { data } = useQuery<IData[]>(["priceChart", coinId], () =>
     fetchCoinChart(coinId)
   );
 
@@ -38,8 +34,17 @@ function Chart({ coinId }: ChartProps) {
   let chartData = null;
   if (Array.isArray(data)) {
     chartData = exceptData?.map((i) => {
+      console.log(i.time_close);
+
+      // Converting epoch to human-readable date
+
+      let epochTime = i.time_close;
+      let date = new Date(epochTime * 1000);
+      let options = { month: "short", day: "numeric" };
+      let humanDate = date.toLocaleDateString(undefined, options as any);
+
       return {
-        x: i.time_close,
+        x: humanDate,
         y: [i.open, i.high, i.low, i.close],
       };
     });

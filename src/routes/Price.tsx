@@ -1,10 +1,5 @@
 import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
 import { fetchCoinChart } from "../api";
-import ApexChart from "react-apexcharts";
-import { useRecoilValue } from "recoil";
-import { isDarkAtom } from "./atoms";
-import { type } from "os";
 import styled from "styled-components";
 import { useState } from "react";
 
@@ -27,7 +22,7 @@ interface IError {
   error: string;
 }
 
-const Minji = styled.div`
+const PriceInfo = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -37,7 +32,7 @@ const Minji = styled.div`
   height: 100px;
 `;
 
-const MinjiItem = styled.span`
+const PriceInfoItem = styled.span`
   margin-top: 10px;
   font-weight: 800;
 `;
@@ -50,31 +45,32 @@ const Span = styled.span`
 `;
 
 function Price({ coinId }: ChartProps) {
-  const [info, setInfo] = useState(false);
   const { isLoading, data } = useQuery<IData[]>(["priceChart", coinId], () =>
     fetchCoinChart(coinId)
   );
 
   const result = data ?? [];
-  let minji = null;
+  let priceInfo = null;
   if (Array.isArray(data)) {
-    minji = result
+    priceInfo = result
       .reduce((start, current) => {
-        return +start + (+current.open - +current.close);
+        return +start + (+current.close - +current.open);
       }, 0)
       .toFixed(2);
   }
 
   return (
     <div>
-      {minji ? (
+      {priceInfo ? (
         isLoading ? (
           "Chart Loading..."
         ) : (
-          <Minji>
-            <span>Current Value</span>
-            <MinjiItem>$ {+minji > 0 ? "+" + minji : minji}</MinjiItem>
-          </Minji>
+          <PriceInfo>
+            <span>Result Over Last 20 Days</span>
+            <PriceInfoItem>
+              $ {+priceInfo > 0 ? "+" + priceInfo : priceInfo}
+            </PriceInfoItem>
+          </PriceInfo>
         )
       ) : (
         <Span>Data Not Found</Span>

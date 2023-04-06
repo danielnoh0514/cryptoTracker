@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
 import {
   Switch,
@@ -9,7 +8,7 @@ import {
 } from "react-router";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { fetchCoinInfo, fetchCoins, fetchCoinTickers } from "../api";
+import { fetchCoinInfo, fetchCoinTickers } from "../api";
 import Chart from "./Chart";
 import Price from "./Price";
 
